@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import CustomerList from './components/CustomerList';
+import AddCustomer from './components/AddCustomer';
+import BulkUpload from './components/BulkUpload';
 
 function App() {
 
@@ -32,9 +35,9 @@ function App() {
       </nav>
 
       <main className="p-6 max-w-7xl mx-auto">
-        {currentView === 'LIST' && <div className="p-10 bg-white rounded shadow">Customer List Table Soon...</div>}
-        {currentView === 'ADD' && <div className="p-10 bg-white rounded shadow">Add Customer Form Soon...</div>}
-        {currentView === 'UPLOAD' && <div className="p-10 bg-white rounded shadow">Bulk Excel Upload Soon...</div>}
+        {currentView === 'LIST' && <CustomerList />}
+        {currentView === 'ADD' && <AddCustomer/>}
+        {currentView === 'UPLOAD' && <BulkUpload/>}
       </main>
     </div>
   )
