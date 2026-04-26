@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const API_BASE_URL = 'http://localhost:8080/api/v1';
 
-const AddCustomer = () => {
+const AddCustomer = ({ selectedCustomer, onCloseEdit }) => {
   const [step, setStep] = useState('SEARCH');
   const [isEditMode, setIsEditMode] = useState(false);
   const [searchNic, setSearchNic] = useState('');
@@ -26,6 +26,22 @@ const AddCustomer = () => {
   useEffect(() => {
     fetchCountries();
   }, []);
+
+  useEffect(() => {
+    if (selectedCustomer) {
+      setIsEditMode(true);
+      setStep('FORM');
+      setCustomerData({
+        nic: selectedCustomer.nic,
+        name: selectedCustomer.name,
+        dob: selectedCustomer.dob,
+        mobileNumbers: selectedCustomer.mobileNumbers || [''],
+        familyMembers: selectedCustomer.familyMembers || [{ name: '', dob: '', nic: '', mobileNumbers: [], addresses: [] }],
+        addresses: selectedCustomer.addresses || [{ addressLine1: '', addressLine2: '', city: null, country: null }]
+      });
+      setMessage({ type: 'info', text: 'Customer loaded for editing' });
+    }
+  }, [selectedCustomer]);
 
   const fetchCountries = async () => {
     try {
@@ -477,7 +493,11 @@ const AddCustomer = () => {
                 setStep('SEARCH');
                 setCustomerData(initialFormState);
                 setSearchNic('');
+                setIsEditMode(false);
                 clearMessage();
+                if (onCloseEdit) {
+                  onCloseEdit();
+                }
               }}
               className="px-6 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition"
             >
